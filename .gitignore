@@ -1,0 +1,8 @@
+.env
+.env.docker
+bin
+*.exe
+
+test.md
+anotherFinalTest.md
+anotherTest.md
