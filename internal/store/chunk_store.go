@@ -71,7 +71,9 @@ func (s *ChunkStore) BatchInsert(ctx context.Context, inputs []ChunkInput) error
 	}
 
 	br := s.db.Pool.SendBatch(ctx, batch)
-	defer br.Close()
+	defer func() {
+		_ = br.Close()
+	}()
 
 	for i := range inputs {
 		if _, err := br.Exec(); err != nil {

@@ -102,16 +102,16 @@ func (h *QueryHandler) Stream(c *fiber.Ctx) error {
 			}
 
 			// SSE format: "data: <json\n\n>"
-			fmt.Fprintf(w, "data: %s\n\n", data)
-			w.Flush()
+			_, _ = fmt.Fprintf(w, "data: %s\n\n", data)
+			_ = w.Flush()
 		}
 
 		// check error from pipeline after channel being drained
 		if err := <-errCh; err != nil {
 			h.logger.ErrorContext(c.Context(), "stream pipeline failed", "error", err)
 			// sent error event to client
-			fmt.Fprintf(w, "event: error\ndata:{\"error\": \"%s\"}\n\n", err.Error())
-			w.Flush()
+			_, _ = fmt.Fprintf(w, "event: error\ndata:{\"error\": \"%s\"}\n\n", err.Error())
+			_ = w.Flush()
 		}
 	})
 

@@ -89,11 +89,11 @@ func (g *Generator) buildPrompt(query string, sources []store.SearchResult) stri
 
 	sb.WriteString("Context:\n")
 	for i, src := range sources {
-		sb.WriteString(fmt.Sprintf("[%d] %s\n\n", i+1, src.Content))
+		fmt.Fprintf(&sb, "[%d] %s\n\n", i+1, src.Content)
 	}
 
 	sb.WriteString("---\n")
-	sb.WriteString(fmt.Sprintf("Question: %s", query))
+	fmt.Fprintf(&sb, "Question: %s", query)
 
 	return sb.String()
 }
