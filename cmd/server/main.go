@@ -14,7 +14,6 @@ import (
 	"github.com/Xenn-00/rag-engine/internal/cache"
 	"github.com/Xenn-00/rag-engine/internal/config"
 	"github.com/Xenn-00/rag-engine/internal/generation"
-	"github.com/Xenn-00/rag-engine/internal/ingestion"
 	"github.com/Xenn-00/rag-engine/internal/pipeline"
 	"github.com/Xenn-00/rag-engine/internal/retrieval"
 	"github.com/Xenn-00/rag-engine/internal/store"
@@ -72,12 +71,7 @@ func main() {
 	documentStore := store.NewDocumentStore(db)
 	chunkStore := store.NewChunkStore(db)
 
-	// -- pipelines ---
-	parser := ingestion.NewParser()
-	chunker := ingestion.NewChunker(0, 0) // 0 = using default values
-
-	ingestionPipeline := pipeline.NewIngestionPipeline(parser, chunker, cachedEmbedder, documentStore, chunkStore, log)
-
+	// -- retriever and generation ---
 	retriever := retrieval.NewRetriever(cachedEmbedder, chunkStore)
 	generator := generation.NewGenerator(ollamaLLM)
 
@@ -111,7 +105,7 @@ func main() {
 	app.Use(fiberPrometheus.Middleware)
 
 	// -- routes ---
-	docHandler := handler.NewDocumentHandler(documentStore, asynqClient, ingestionPipeline, log)
+	docHandler := handler.NewDocumentHandler(documentStore, asynqClient, log)
 	queryHandler := handler.NewQueryHandler(queryPipeline, log)
 
 	v1 := app.Group("/v1")

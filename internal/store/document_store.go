@@ -23,6 +23,14 @@ type DocumentStore struct {
 	db *DB
 }
 
+type DocumentStoreInterface interface {
+	Create(ctx context.Context, filename, mimeType string) (*Document, error)
+	GetByID(ctx context.Context, id uuid.UUID) (*Document, error)
+	UpdateStatus(ctx context.Context, id uuid.UUID, status string, errorMsg *string) error
+	IncrementChunkCount(ctx context.Context, id uuid.UUID, count int) error
+	Delete(ctx context.Context, id uuid.UUID) error
+}
+
 func NewDocumentStore(db *DB) *DocumentStore {
 	return &DocumentStore{db: db}
 }

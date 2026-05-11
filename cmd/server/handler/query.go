@@ -12,11 +12,11 @@ import (
 )
 
 type QueryHandler struct {
-	queryPipeline *pipeline.QueryPipeline
+	queryPipeline pipeline.QueryPipelineInterface
 	logger        *slog.Logger
 }
 
-func NewQueryHandler(queryPipeline *pipeline.QueryPipeline, logger *slog.Logger) *QueryHandler {
+func NewQueryHandler(queryPipeline pipeline.QueryPipelineInterface, logger *slog.Logger) *QueryHandler {
 	return &QueryHandler{
 		queryPipeline: queryPipeline,
 		logger:        logger,

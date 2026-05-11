@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/Xenn-00/rag-engine/internal/pipeline"
 	"github.com/Xenn-00/rag-engine/internal/store"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -19,23 +18,20 @@ const (
 )
 
 type DocumentHandler struct {
-	documentStore     *store.DocumentStore
-	asynqClient       *asynq.Client
-	ingestionPipeline *pipeline.IngestionPipeline
-	logger            *slog.Logger
+	documentStore store.DocumentStoreInterface
+	asynqClient   *asynq.Client
+	logger        *slog.Logger
 }
 
 func NewDocumentHandler(
-	documentStore *store.DocumentStore,
+	documentStore store.DocumentStoreInterface,
 	asynqClient *asynq.Client,
-	ingestionPipeline *pipeline.IngestionPipeline,
 	logger *slog.Logger,
 ) *DocumentHandler {
 	return &DocumentHandler{
-		documentStore:     documentStore,
-		asynqClient:       asynqClient,
-		ingestionPipeline: ingestionPipeline,
-		logger:            logger,
+		documentStore: documentStore,
+		asynqClient:   asynqClient,
+		logger:        logger,
 	}
 }
 

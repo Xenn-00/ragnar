@@ -13,10 +13,10 @@ import (
 // logic embedding, so OllamaEmbedder always stay clean without any caching logic from Redis.
 type cachedEmbedder struct {
 	embedder Embedder
-	cache    *cache.EmbeddingCache
+	cache    cache.EmbeddingCacheInterface
 }
 
-func NewCached(embedder Embedder, cache *cache.EmbeddingCache) Embedder {
+func NewCached(embedder Embedder, cache cache.EmbeddingCacheInterface) Embedder {
 	return &cachedEmbedder{
 		embedder: embedder,
 		cache:    cache,

@@ -21,6 +21,11 @@ type EmbeddingCache struct {
 	ttl    time.Duration
 }
 
+type EmbeddingCacheInterface interface {
+	Get(ctx context.Context, text string) ([]float32, error)
+	Set(ctx context.Context, text string, embedding []float32) error
+}
+
 func NewEmbeddingCache(cfg *config.RedisConfig) *EmbeddingCache {
 	client := redis.NewClient(&redis.Options{
 		Addr: cfg.Addr,

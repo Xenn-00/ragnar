@@ -33,6 +33,11 @@ type QueryPipeline struct {
 	logger    *slog.Logger
 }
 
+type QueryPipelineInterface interface {
+	Run(ctx context.Context, req QueryRequest) (*QueryResponse, error)
+	RunStream(ctx context.Context, req QueryRequest, chunks chan<- llm.StreamChunk) ([]store.SearchResult, error)
+}
+
 func NewQueryPipeline(
 	retriever *retrieval.Retriever,
 	generator *generation.Generator,

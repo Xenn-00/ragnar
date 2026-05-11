@@ -17,16 +17,20 @@ type IngestionPipeline struct {
 	parser        *ingestion.Parser
 	chunker       *ingestion.Chunker
 	embedder      embedder.Embedder
-	documentStore *store.DocumentStore
+	documentStore store.DocumentStoreInterface
 	chunkStore    *store.ChunkStore
 	logger        *slog.Logger
+}
+
+type IngestionPipelineInterface interface {
+	Run(ctx context.Context, documentID uuid.UUID, filename string, data []byte, mimeType string) error
 }
 
 func NewIngestionPipeline(
 	parser *ingestion.Parser,
 	chunker *ingestion.Chunker,
 	embedder embedder.Embedder,
-	documentStore *store.DocumentStore,
+	documentStore store.DocumentStoreInterface,
 	chunkStore *store.ChunkStore,
 	logger *slog.Logger,
 ) *IngestionPipeline {
