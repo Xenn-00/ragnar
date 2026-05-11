@@ -58,7 +58,9 @@ func main() {
 		log.Error("failed to connect to redis", "error", err)
 		os.Exit(1)
 	}
-	defer embeddingCache.Close()
+	defer func() {
+		_ = embeddingCache.Close()
+	}()
 	log.Info("redis connected")
 
 	// -- providers ---
@@ -79,7 +81,9 @@ func main() {
 
 	// -- asynq client (for enqueue jobs from HTTP handler) ---
 	asynqClient := asynq.NewClient(asynq.RedisClientOpt{Addr: cfg.Redis.Addr})
-	defer asynqClient.Close()
+	defer func() {
+		_ = asynqClient.Close()
+	}()
 
 	// -- HTTP server ---
 

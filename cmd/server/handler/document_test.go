@@ -126,7 +126,7 @@ func TestDocumentHandler_Upload_UnsupportedMimeType(t *testing.T) {
 	part, err := writer.CreateFormFile("file", "test.json")
 	require.NoError(t, err)
 	_, _ = io.Copy(part, bytes.NewReader([]byte(`{"key":"value"}`)))
-	writer.Close()
+	_ = writer.Close()
 
 	req := httptest.NewRequest(http.MethodPost, "/v1/documents", body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
@@ -148,8 +148,8 @@ func TestDocumentHandler_Upload_StoreCreateFails(t *testing.T) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	part, _ := writer.CreateFormFile("file", "test.md")
-	io.Copy(part, bytes.NewReader([]byte("# Hello")))
-	writer.Close()
+	_, _ = io.Copy(part, bytes.NewReader([]byte("# Hello")))
+	_ = writer.Close()
 
 	req := httptest.NewRequest(http.MethodPost, "/v1/documents", body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
@@ -178,8 +178,8 @@ func TestDocumentHandler_Upload_EnqueueFails(t *testing.T) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	part, _ := writer.CreateFormFile("file", "test.md")
-	io.Copy(part, bytes.NewReader([]byte("# Hello")))
-	writer.Close()
+	_, _ = io.Copy(part, bytes.NewReader([]byte("# Hello")))
+	_ = writer.Close()
 
 	req := httptest.NewRequest(http.MethodPost, "/v1/documents", body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())

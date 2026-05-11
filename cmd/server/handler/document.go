@@ -64,7 +64,9 @@ func (h *DocumentHandler) Upload(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "failed to open uploaded file")
 	}
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 
 	data, err := io.ReadAll(file)
 	log.Printf("read %d bytes from upload", len(data))
@@ -81,6 +83,9 @@ func (h *DocumentHandler) Upload(c *fiber.Ctx) error {
 
 	// enqueue ingestion job to asynq
 	task, err := newIngestTask(doc.ID, fileHeader.Filename, data, mimeType)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "failed to create ingestion task")
+	}
 
 	if _, err := h.asynqClient.EnqueueContext(c.Context(), task); err != nil {
 		h.logger.ErrorContext(c.Context(), "failed to enqueue ingestion task", "document_id", doc.ID, "error", err)
