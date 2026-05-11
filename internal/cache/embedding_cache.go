@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Xenn-00/rag-engine/internal/config"
+	"github.com/Xenn-00/ragnar/internal/config"
 	"github.com/redis/go-redis/v9"
 )
 

@@ -6,11 +6,11 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/Xenn-00/rag-engine/internal/generation"
-	"github.com/Xenn-00/rag-engine/internal/metrics"
-	"github.com/Xenn-00/rag-engine/internal/retrieval"
-	"github.com/Xenn-00/rag-engine/internal/store"
-	"github.com/Xenn-00/rag-engine/pkg/provider/llm"
+	"github.com/Xenn-00/ragnar/internal/generation"
+	"github.com/Xenn-00/ragnar/internal/metrics"
+	"github.com/Xenn-00/ragnar/internal/retrieval"
+	"github.com/Xenn-00/ragnar/internal/store"
+	"github.com/Xenn-00/ragnar/pkg/provider/llm"
 )
 
 // QueryRequest is an input for query pipeline

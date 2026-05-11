@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/Xenn-00/rag-engine/pkg/task"
+	"github.com/Xenn-00/ragnar/pkg/task"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
 )

@@ -6,10 +6,10 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/Xenn-00/rag-engine/internal/ingestion"
-	"github.com/Xenn-00/rag-engine/internal/metrics"
-	"github.com/Xenn-00/rag-engine/internal/store"
-	"github.com/Xenn-00/rag-engine/pkg/provider/embedder"
+	"github.com/Xenn-00/ragnar/internal/ingestion"
+	"github.com/Xenn-00/ragnar/internal/metrics"
+	"github.com/Xenn-00/ragnar/internal/store"
+	"github.com/Xenn-00/ragnar/pkg/provider/embedder"
 	"github.com/google/uuid"
 )
 

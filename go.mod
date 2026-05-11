@@ -1,4 +1,4 @@
-module github.com/Xenn-00/rag-engine
+module github.com/Xenn-00/ragnar
 
 go 1.26.3
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Xenn-00/rag-engine/internal/store"
-	"github.com/Xenn-00/rag-engine/pkg/provider/llm"
+	"github.com/Xenn-00/ragnar/internal/store"
+	"github.com/Xenn-00/ragnar/pkg/provider/llm"
 )
 
 const (

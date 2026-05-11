@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Xenn-00/rag-engine/internal/store"
+	"github.com/Xenn-00/ragnar/internal/store"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"

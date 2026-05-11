@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Xenn-00/rag-engine/internal/config"
+	"github.com/Xenn-00/ragnar/internal/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

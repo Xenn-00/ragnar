@@ -3,7 +3,7 @@ package retrieval
 import (
 	"testing"
 
-	"github.com/Xenn-00/rag-engine/internal/store"
+	"github.com/Xenn-00/ragnar/internal/store"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

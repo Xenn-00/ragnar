@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/Xenn-00/rag-engine/internal/store"
-	"github.com/Xenn-00/rag-engine/pkg/provider/embedder"
+	"github.com/Xenn-00/ragnar/internal/store"
+	"github.com/Xenn-00/ragnar/pkg/provider/embedder"
 )
 
 const (

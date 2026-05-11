@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/Xenn-00/rag-engine/internal/pipeline"
-	"github.com/Xenn-00/rag-engine/pkg/provider/llm"
+	"github.com/Xenn-00/ragnar/internal/pipeline"
+	"github.com/Xenn-00/ragnar/pkg/provider/llm"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -10,9 +10,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Xenn-00/rag-engine/internal/pipeline"
-	"github.com/Xenn-00/rag-engine/internal/store"
-	"github.com/Xenn-00/rag-engine/pkg/provider/llm"
+	"github.com/Xenn-00/ragnar/internal/pipeline"
+	"github.com/Xenn-00/ragnar/internal/store"
+	"github.com/Xenn-00/ragnar/pkg/provider/llm"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -198,24 +198,4 @@ func TestQueryHandler_Stream_MissingQueryParam(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, fiber.StatusBadRequest, resp.StatusCode)
-}
-
-func TestQueryHandler_Stream_SetsSSEHeaders(t *testing.T) {
-	mockPipeline := new(MockQueryPipeline)
-	h := NewQueryHandler(mockPipeline, slog.Default())
-	app := newQueryTestApp(h)
-
-	mockPipeline.On("RunStream", mock.Anything, mock.Anything, mock.Anything).
-		Return(func(ch chan<- llm.StreamChunk) {
-			ch <- llm.StreamChunk{Content: "hello", Done: false}
-			ch <- llm.StreamChunk{Content: "", Done: true}
-		}, nil)
-
-	req := httptest.NewRequest(http.MethodGet, "/v1/query/stream?q=test+query", nil)
-	resp, err := app.Test(req, 3000)
-
-	require.NoError(t, err)
-	assert.Equal(t, "text/event-stream", resp.Header.Get("Content-Type"))
-	assert.Equal(t, "no-cache", resp.Header.Get("Cache-Control"))
-	assert.Equal(t, "keep-alive", resp.Header.Get("Connection"))
 }

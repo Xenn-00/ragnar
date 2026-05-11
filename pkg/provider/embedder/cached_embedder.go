@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Xenn-00/rag-engine/internal/cache"
-	"github.com/Xenn-00/rag-engine/internal/metrics"
+	"github.com/Xenn-00/ragnar/internal/cache"
+	"github.com/Xenn-00/ragnar/internal/metrics"
 )
 
 // cachedEmbedder is a decorator that wraps an Embedder with Redis cache.
