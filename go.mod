@@ -1,9 +1,8 @@
 module github.com/Xenn-00/rag-engine
 
-go 1.25.0
+go 1.26.3
 
 require (
-	github.com/go-playground/assert/v2 v2.2.0
 	github.com/gofiber/fiber/v2 v2.52.13
 	github.com/google/uuid v1.6.0
 	github.com/hibiken/asynq v0.26.0
