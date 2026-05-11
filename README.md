@@ -8,6 +8,7 @@
 ![Ollama](https://img.shields.io/badge/Ollama-Qwen3%3A8b-black?style=flat)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat&logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat)
+![CI](https://github.com/Xenn-00/ragnar/actions/workflows/ci.yml/badge.svg)
 
 ---
 
