@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
@@ -17,15 +18,19 @@ const (
 	maxUploadSize = 20 << 20 // 20 MB
 )
 
+type asynqEnqueuer interface {
+	EnqueueContext(ctx context.Context, task *asynq.Task, opts ...asynq.Option) (*asynq.TaskInfo, error)
+}
+
 type DocumentHandler struct {
 	documentStore store.DocumentStoreInterface
-	asynqClient   *asynq.Client
+	asynqClient   asynqEnqueuer
 	logger        *slog.Logger
 }
 
 func NewDocumentHandler(
 	documentStore store.DocumentStoreInterface,
-	asynqClient *asynq.Client,
+	asynqClient asynqEnqueuer,
 	logger *slog.Logger,
 ) *DocumentHandler {
 	return &DocumentHandler{
