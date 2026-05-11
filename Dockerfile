@@ -2,7 +2,7 @@
 # Stage 1: Builder
 # Compile the binaries (server + worker) here
 # ============================================================
-FROM golang:1.25-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 # Install build dependencies for CGO (needed by leedongthuc/pdf)
 RUN apk add --no-cache gcc musl-dev
