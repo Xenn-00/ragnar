@@ -68,7 +68,7 @@ graph TD
 
 | Component        | Technology            | Reason                                                        |
 | ---------------- | --------------------- | ------------------------------------------------------------- |
-| Language         | Go 1.22               | Concurrency primitives, low overhead, great for pipeline work |
+| Language         | Go 1.26.3              | Concurrency primitives, low overhead, great for pipeline work |
 | HTTP Server      | Fiber                 | Fast, minimal, expressive routing                             |
 | Vector Store     | PostgreSQL + pgvector | Battle-tested persistence with native vector ops              |
 | Embedding Cache  | Redis                 | Sub-millisecond cache lookups, avoids redundant embed calls   |
