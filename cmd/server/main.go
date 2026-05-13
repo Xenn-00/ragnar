@@ -21,6 +21,7 @@ import (
 	"github.com/Xenn-00/ragnar/pkg/provider/llm"
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/hibiken/asynq"
@@ -101,6 +102,18 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New(logger.Config{
 		Format: "${time} ${method} ${path} ${status} ${latency}\n",
+	}))
+	app.Use(limiter.New(limiter.Config{
+		Max:        60, // 60 request
+		Expiration: 1 * time.Minute,
+		KeyGenerator: func(c *fiber.Ctx) string {
+			return c.IP()
+		},
+		LimitReached: func(c *fiber.Ctx) error {
+			return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
+				"error": "rate limit exceeded, try again later",
+			})
+		},
 	}))
 
 	// -- metrics ---

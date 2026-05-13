@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -18,6 +19,9 @@ import (
 	"github.com/Xenn-00/ragnar/pkg/task"
 	"github.com/hibiken/asynq"
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	_ "github.com/Xenn-00/ragnar/internal/metrics"
 )
 
 func main() {
@@ -79,6 +83,15 @@ func main() {
 			log.ErrorContext(ctx, "task failed", "type", task.Type(), "error", err)
 		}),
 	})
+
+	// -- metrics ---
+	go func() {
+		mux := http.NewServeMux()
+		mux.Handle("/metrics", promhttp.Handler())
+		if err := http.ListenAndServe(":9091", mux); err != nil {
+			log.Error("metrics server error", "error", err)
+		}
+	}()
 
 	mux := asynq.NewServeMux()
 	mux.HandleFunc(task.TypeIngestDocument, makeIngestHandler(ingestionPipeline, log))

@@ -64,6 +64,8 @@ services:
     env_file:
       - .env
       - .env.docker
+    ports:
+      - "9091:9091"
     depends_on:
       postgres:
         condition: service_healthy
