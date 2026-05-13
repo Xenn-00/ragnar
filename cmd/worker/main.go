@@ -66,7 +66,7 @@ func main() {
 
 	// -- pipelines ---
 	parser := ingestion.NewParser()
-	chunker := ingestion.NewChunker(0, 0) // 0 = using default values
+	chunker := buildChunker(ctx, cfg, cachedEmbedder, log)
 
 	ingestionPipeline := pipeline.NewIngestionPipeline(parser, chunker, cachedEmbedder, documentStore, chunkStore, log)
 
@@ -122,5 +122,25 @@ func makeIngestHandler(p *pipeline.IngestionPipeline, log *slog.Logger) asynq.Ha
 		log.Info("payload data preview", "preview", string(payload.Data[:min(len(payload.Data), 100)]))
 
 		return nil
+	}
+}
+
+func buildChunker(ctx context.Context, cfg *config.Config, emb embedder.Embedder, log *slog.Logger) ingestion.Chunker {
+	switch cfg.Chunker.Mode {
+	case "semantic":
+		log.Info("chunker mode: semantic",
+			"threshold", cfg.Chunker.Threshold,
+			"min_sents", cfg.Chunker.MinSents,
+			"max_sents", cfg.Chunker.MaxSents,
+		)
+		return ingestion.NewSemanticChunker(ctx, emb, ingestion.SemanticChunkerConfig{
+			Threshold: cfg.Chunker.Threshold,
+			MinSents:  cfg.Chunker.MinSents,
+			MaxSents:  cfg.Chunker.MaxSents,
+		})
+	default:
+		log.Info("chunker mode: fixed-size (default)")
+		return ingestion.NewFixedSizeChunker(0, 0)
+
 	}
 }

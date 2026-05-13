@@ -7,36 +7,36 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewChunker_Defaults(t *testing.T) {
+func TestNewFixedSizeChunker_Defaults(t *testing.T) {
 	t.Run("invalid chunkSize falls back to default", func(t *testing.T) {
-		c := NewChunker(0, 50)
+		c := NewFixedSizeChunker(0, 50)
 		assert.Equal(t, defaultChunkSize, c.chunkSize)
 	})
 
 	t.Run("negative chunkSize falls back to default", func(t *testing.T) {
-		c := NewChunker(-10, 50)
+		c := NewFixedSizeChunker(-10, 50)
 		assert.Equal(t, defaultChunkSize, c.chunkSize)
 	})
 
 	t.Run("negative overlap falls back to default", func(t *testing.T) {
-		c := NewChunker(100, -1)
+		c := NewFixedSizeChunker(100, -1)
 		assert.Equal(t, defaultChunkOverlap, c.chunkOverlap)
 	})
 
 	t.Run("overlap >= chunkSize falls back to default", func(t *testing.T) {
-		c := NewChunker(100, 100)
+		c := NewFixedSizeChunker(100, 100)
 		assert.Equal(t, defaultChunkOverlap, c.chunkOverlap)
 	})
 
 	t.Run("valid params are accepted as-is", func(t *testing.T) {
-		c := NewChunker(200, 20)
+		c := NewFixedSizeChunker(200, 20)
 		assert.Equal(t, 200, c.chunkSize)
 		assert.Equal(t, 20, c.chunkOverlap)
 	})
 }
 
 func TestChunker_Chunk_EmptyDocument(t *testing.T) {
-	c := NewChunker(5, 2)
+	c := NewFixedSizeChunker(5, 2)
 	doc := &ParsedDocument{Content: "", Pages: 0}
 
 	chunks := c.Chunk(doc)
@@ -44,7 +44,7 @@ func TestChunker_Chunk_EmptyDocument(t *testing.T) {
 }
 
 func TestChunker_Chunk_WhitespaceOnly(t *testing.T) {
-	c := NewChunker(5, 2)
+	c := NewFixedSizeChunker(5, 2)
 	doc := &ParsedDocument{Content: "	\n\t ", Pages: 0}
 
 	chunks := c.Chunk(doc)
@@ -57,7 +57,7 @@ func TestChunker_Chunk_OverlapBehavior(t *testing.T) {
 	// chunk0: [a b c d e]
 	// chunk1: [d e f g h] 	<- overlap 2 words from chunk0
 	// chunk2: [g h i]	 	<- overlap 2 words from chunk1
-	c := NewChunker(5, 2)
+	c := NewFixedSizeChunker(5, 2)
 	doc := &ParsedDocument{
 		Content: "a b c d e f g h i",
 		Pages:   0,
@@ -72,7 +72,7 @@ func TestChunker_Chunk_OverlapBehavior(t *testing.T) {
 }
 
 func TestChunker_Chunk_IndexSequential(t *testing.T) {
-	c := NewChunker(3, 1)
+	c := NewFixedSizeChunker(3, 1)
 	doc := &ParsedDocument{Content: "a b c d e f g h i", Pages: 0}
 
 	chunks := c.Chunk(doc)
@@ -82,7 +82,7 @@ func TestChunker_Chunk_IndexSequential(t *testing.T) {
 }
 
 func TestChunker_Chunk_MetadataPresent(t *testing.T) {
-	c := NewChunker(5, 2)
+	c := NewFixedSizeChunker(5, 2)
 	doc := &ParsedDocument{
 		Content: "a b c d e f g",
 		Pages:   0,
@@ -98,7 +98,7 @@ func TestChunker_Chunk_MetadataPresent(t *testing.T) {
 }
 
 func TestChunker_Chunk_PDFEstimatedPage(t *testing.T) {
-	c := NewChunker(5, 0)
+	c := NewFixedSizeChunker(5, 0)
 	// 10 words, 2 pages
 	doc := &ParsedDocument{
 		Content: "a b c d e f g h i j",
@@ -115,7 +115,7 @@ func TestChunker_Chunk_PDFEstimatedPage(t *testing.T) {
 }
 
 func TestChunker_Chunk_NoPDFPageMetadata(t *testing.T) {
-	c := NewChunker(5, 0)
+	c := NewFixedSizeChunker(5, 0)
 	// 10 words, 2 pages
 	doc := &ParsedDocument{
 		Content: "a b c d e f g h i j",
@@ -132,7 +132,7 @@ func TestChunker_Chunk_NoPDFPageMetadata(t *testing.T) {
 }
 
 func TestChunker_Chunk_ExactlyOneChunk(t *testing.T) {
-	c := NewChunker(10, 2)
+	c := NewFixedSizeChunker(10, 2)
 	doc := &ParsedDocument{Content: "a b c", Pages: 0}
 
 	chunks := c.Chunk(doc)
@@ -145,7 +145,7 @@ func TestChunker_Chunk_LastChunkContainsRemainder(t *testing.T) {
 	// words: [a b c d e]
 	// chunk0: [a b c d]
 	// chunk1: [e]
-	c := NewChunker(4, 0)
+	c := NewFixedSizeChunker(4, 0)
 	doc := &ParsedDocument{Content: "a b c d e", Pages: 0}
 
 	chunks := c.Chunk(doc)

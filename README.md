@@ -2,7 +2,7 @@
 
 > A production-grade RAG engine built in Go - document ingestions, vector search, and streaming LLM generation. No frameworks, no LangChain, just pure engineering.
 
-![Go](https://img.shields.io/badge/Go-1.25-00ADD8?style=flat&logo=go&logoColor=white)
+![Go](https://img.shields.io/badge/Go-1.26-00ADD8?style=flat&logo=go&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgvector-336791?style=flat&logo=postgresql&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-Cache-DC382D?style=flat&logo=redis&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-Qwen3%3A8b-black?style=flat)
@@ -68,7 +68,7 @@ graph TD
 
 | Component        | Technology            | Reason                                                        |
 | ---------------- | --------------------- | ------------------------------------------------------------- |
-| Language         | Go 1.26.3              | Concurrency primitives, low overhead, great for pipeline work |
+| Language         | Go 1.26.3             | Concurrency primitives, low overhead, great for pipeline work |
 | HTTP Server      | Fiber                 | Fast, minimal, expressive routing                             |
 | Vector Store     | PostgreSQL + pgvector | Battle-tested persistence with native vector ops              |
 | Embedding Cache  | Redis                 | Sub-millisecond cache lookups, avoids redundant embed calls   |
@@ -202,7 +202,7 @@ ragnar/
 
 ## Roadmap
 
-- [ ] Semantic chunking (sentence-boundary aware)
+- [✅] Semantic chunking (sentence-boundary aware)
 - [ ] Rate limiting
 - [ ] `/metrics` endpoint on worker
 - [ ] `ivfflat` index activation at scale

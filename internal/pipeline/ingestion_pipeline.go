@@ -15,7 +15,7 @@ import (
 
 type IngestionPipeline struct {
 	parser        *ingestion.Parser
-	chunker       *ingestion.Chunker
+	chunker       ingestion.Chunker
 	embedder      embedder.Embedder
 	documentStore store.DocumentStoreInterface
 	chunkStore    *store.ChunkStore
@@ -28,7 +28,7 @@ type IngestionPipelineInterface interface {
 
 func NewIngestionPipeline(
 	parser *ingestion.Parser,
-	chunker *ingestion.Chunker,
+	chunker ingestion.Chunker,
 	embedder embedder.Embedder,
 	documentStore store.DocumentStoreInterface,
 	chunkStore *store.ChunkStore,

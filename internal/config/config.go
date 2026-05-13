@@ -12,6 +12,7 @@ type Config struct {
 	Ollama   OllamaConfig
 	Server   ServerConfig
 	Worker   WorkerConfig
+	Chunker  ChunkerConfig
 }
 
 type PostgresConfig struct {
@@ -42,6 +43,13 @@ type WorkerConfig struct {
 	Concurrency int
 }
 
+type ChunkerConfig struct {
+	Mode      string  // "fixed" | "semantic"
+	Threshold float64 // semantic only, default 0.75
+	MinSents  int     // semantic only, default 2
+	MaxSents  int     // semantic only, default 20
+}
+
 func Load() (*Config, error) {
 	maxConns, err := strconv.Atoi(getEnv("POSTGRES_MAX_CONNS", "10"))
 	if err != nil {
@@ -56,6 +64,21 @@ func Load() (*Config, error) {
 	workerConcurrency, err := strconv.Atoi(getEnv("WORKER_CONCURRENCY", "5"))
 	if err != nil {
 		return nil, fmt.Errorf("invalid WORKER_CONCURRENCY: %w", err)
+	}
+
+	semanticThreshold, err := strconv.ParseFloat(getEnv("CHUNKER_SEMANTIC_THRESHOLD", "0.75"), 64)
+	if err != nil {
+		return nil, fmt.Errorf("invalid CHUNKER_SEMANTIC_THRESHOLD: %w", err)
+	}
+
+	semanticMinSents, err := strconv.Atoi(getEnv("CHUNKER_SEMANTIC_MIN_SENTS", "2"))
+	if err != nil {
+		return nil, fmt.Errorf("invalid CHUNKER_SEMANTIC_MIN_SENTS: %w", err)
+	}
+
+	semanticMaxSents, err := strconv.Atoi(getEnv("CHUNKER_SEMANTIC_MAX_SENTS", "20"))
+	if err != nil {
+		return nil, fmt.Errorf("invalid CHUNKER_SEMANTIC_MAX_SENTS: %w", err)
 	}
 
 	cfg := &Config{
@@ -81,6 +104,13 @@ func Load() (*Config, error) {
 		},
 		Worker: WorkerConfig{
 			Concurrency: workerConcurrency,
+		},
+
+		Chunker: ChunkerConfig{
+			Mode:      getEnv("CHUNKER_MODE", "fixed"),
+			Threshold: semanticThreshold,
+			MinSents:  semanticMinSents,
+			MaxSents:  semanticMaxSents,
 		},
 	}
 
